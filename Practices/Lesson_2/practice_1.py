@@ -1,9 +1,7 @@
 import requests
 import pandas as pd
 import numpy as np
-import seaborn as sns
-from pandas import DataFrame
-from bs4 import BeautifulSoup
+
 
 url = "https://uk.wikipedia.org/wiki/Народжуваність_в_Україні"
 
@@ -22,7 +20,7 @@ df_dtypes = df.dtypes
 
 # Task 1.6
 columns = df.columns
-total_missing_data = np.sum(np.sum(pd.isnull(df[columns[1:]])))
+total_missing_data = np.sum(pd.isnull(df[columns[1:]]))
 
 # Task 1.7
 df = df.drop([27])
