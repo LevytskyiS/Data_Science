@@ -1,7 +1,8 @@
 import requests
 import pandas as pd
 import numpy as np
-
+import matplotlib.pyplot as plt
+import random
 
 url = "https://uk.wikipedia.org/wiki/Народжуваність_в_Україні"
 
@@ -43,3 +44,66 @@ max_2014 = df["2014"].max()
 max_2014_region = df[df["2014"] == max_2014][["регіон"]]
 
 # Task 1.11 Побудуйте стовпчикову діаграму народжуваності по регіонах у 2019 році
+year_14 = df["2014"]
+regions = df["регіон"]
+
+
+def clean_region(regs: list):
+    result = []
+    for reg in regs:
+        if reg == "Автономна Республіка Крим":
+            reg = "APK"
+            result.append(reg)
+            continue
+        if reg == "Севастополь (міськрада)":
+            reg = "Севастополь"
+            result.append(reg)
+            continue
+        name = reg.split(" ")[-1]
+        if name == "область":
+            name = "о."
+            reg = f"{reg.split(' ')[0]} {name}"
+            result.append(reg)
+        else:
+            result.append(reg)
+    return result
+
+
+regions = clean_region(df["регіон"])
+
+
+def rgb_colors(arg: int):
+    counter = 0
+    result = []
+    while counter < arg:
+        random_color = (
+            round(random.random(), 1),
+            round(random.random(), 1),
+            round(random.random(), 1),
+        )
+        result.append(random_color)
+        counter += 1
+    return result
+
+
+colors = rgb_colors(len(regions))
+
+plt.figure(figsize=(10, 6))
+plt.bar(regions, year_14, color=colors)
+plt.xticks(rotation=90)
+plt.tick_params(axis="both", labelsize=5)
+plt.title("Birth Rate in Ukraine in 2014", fontsize=10)
+plt.xlabel("Regions", fontsize="small", color="midnightblue")
+plt.ylabel("Birth Rate", fontsize="small", color="midnightblue")
+plt.show()
+
+# plt.pie(
+#     year_14,
+#     labels=regions,
+#     shadow=True,
+#     autopct="%.2f%%",
+#     pctdistance=1.15,
+#     labeldistance=1.35,
+# )
+
+# plt.show()
