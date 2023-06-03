@@ -10,7 +10,7 @@ df = pd.read_csv(csv_file, header=0)
 
 # Task 2.2 Прочитайте отриману таблицю, використовуючи метод head
 df.head()
-# print(df.head())
+
 # Task 2.3 Визначте розмір таблиці за допомогою методу shape
 df.shape
 
