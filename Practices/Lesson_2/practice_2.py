@@ -116,23 +116,46 @@ plt.close("all")
 # plt.close("all")
 
 # Chart 3
+# df = pd.read_csv(csv_file, header=0)
+# eng_sal = df.groupby(["Уровень.английского"])["Зарплата.в.месяц"].agg(
+#     ["min", "max", "mean"]
+# )
+
+# data = eng_sal["mean"]
+# labels = eng_sal.index
+
+# plt.bar(
+#     labels,
+#     data,
+#     color=["b", "r", "y", "g", "c"],
+# )
+
+# plt.xlabel("Рівень англійської", fontsize="small", color="midnightblue")
+# plt.ylabel("Зарплата", fontsize="small", color="midnightblue")
+# plt.xticks(rotation=90)
+# plt.title("Вплив знанная англійської мови на зарплату", fontsize=15)
+# plt.show()
+# plt.close("all")
+
+# Chart 4
 df = pd.read_csv(csv_file, header=0)
-eng_sal = df.groupby(["Уровень.английского"])["Зарплата.в.месяц"].agg(
-    ["min", "max", "mean"]
-)
+# group_data = df.groupby(["Должность", "Пол"])["Зарплата.в.месяц"].agg("max")
+# a = group_data[:, "женский"]
+# poss = a.index.values
+# sal = a.values
+# dfq = pd.concat(
+#     [pd.DataFrame(poss, columns=["Position"]), pd.DataFrame(sal, columns=["Salary"])],
+#     axis=1,
+# )
 
-data = eng_sal["mean"]
-labels = eng_sal.index
+# Chart 5
+# df = df.loc[df["Должность"] == "DevOps"]
+# df = df.groupby(["exp"])["salary"].agg(["min", "max"])
 
-plt.bar(
-    labels,
-    data,
-    color=["b", "r", "y", "g", "c"],
-)
+# exp = df.index.values
+# min_sal = df.values[:, 0]
+# max_sal = df.values[:, 1]
 
-plt.xlabel("Рівень англійської", fontsize="small", color="midnightblue")
-plt.ylabel("Зарплата", fontsize="small", color="midnightblue")
-plt.xticks(rotation=90)
-plt.title("Вплив знанная англійської мови на зарплату", fontsize=15)
-plt.show()
-plt.close("all")
+# plt.plot(exp, min_sal)
+# plt.plot(exp, max_sal)
+# plt.show()
