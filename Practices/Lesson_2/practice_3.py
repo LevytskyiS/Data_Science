@@ -89,3 +89,100 @@ b49 = df[
 books_2015 = df[df["year"] == 2015].sort_values(by="price", ascending=True)
 cheap_books_2015 = books_2015[(books_2015["price"] < 8)]
 last_book = cheap_books_2015.tail(1).name
+
+# Task 3.16 Для початку давайте подивимося на максимальну та мінімальну
+# ціни для кожного з жанрів (використовуйте функції groupby та agg,
+# для підрахунку мінімальних та максимальних значень використовуйте max та min). Не беріть усі стовпці, виберіть тільки потрібні вам
+genre_prices = df.groupby("genre")["price"].agg(["min", "max"])
+
+# Максимальна ціна для жанру Fiction: 82
+# Мінімальна ціна для жанру Fiction: 0
+# Максимальна ціна для жанру Non Fiction: 105
+# Мінімальна ціна для жанру Non Fiction: 0
+
+# Task 3.17 Тепер створіть новий датафрейм, який вміщатиме кількість книг
+# для кожного з авторів (використовуйте функції groupby та agg, для підрахунку
+# кількості використовуйте count). Не беріть усі стовпці, виберете тільки потрібні
+df = df.drop_duplicates(subset=["name"])
+books = df.groupby(["author"], group_keys=False)["name"].count()
+books.sort_values(ascending=True).tail(1)
+df1 = pd.DataFrame(books)
+
+# Якої розмірності вийшла таблиця? Відповідь: (248, 1)
+# Який автор має найбільше книг? Відповідь: Jeff Kinney
+# Скільки книг цього автора? Відповідь: 12
+
+# Task 3.18 Tепер створіть другий датафрейм, який буде вміщати середній рейтинг для кожного
+# автора (використовуйте функції groupby та agg, для підрахунку середнього значення використовуйте mean).
+# Не беріть усі стовпці, виберете тільки потрібні
+
+mean_rating = df.groupby(["author"], group_keys=False)["user_rating"].agg("mean")
+mean_rating.sort_values(ascending=False).tail(1)
+df2 = pd.DataFrame(mean_rating)
+
+# У якого автора середній рейтинг мінімальний? Відповідь: Donna Tartt
+# Який у цього автора середній рейтинг? Відповідь: 3.9
+
+# Task 3.19 З'єднайте останні два датафрейми так, щоб для кожного автора було
+# видно кількість книг та середній рейтинг
+# (Використовуйте функцію concat з параметром axis=1). Збережіть результат у змінну
+
+df3 = pd.concat([df1, df2], axis=1)
+
+# Task 3.20 Відсортуйте датафрейм за зростаючою кількістю книг та зростаючим рейтингом (використовуйте функцію sort_values)
+# Який автор перший у списку? Donna Tartt
+df3.sort_values(by=["name", "user_rating"], ascending=True)
+
+plt.close("all")
+
+# Chart 1
+df = pd.read_csv(bestsellers_csv)
+df.columns = ["name", "author", "user_rating", "reviews", "price", "year", "genre"]
+ratings = df.groupby(["year"])["user_rating"].agg(["min", "max", "mean"])
+mr = ratings["min"]
+mx = ratings["max"]
+mn = ratings["mean"]
+
+plt.plot(mr, "c", label="Min rating")
+plt.plot(mx, "b", label="Max rating")
+plt.plot(mn, "g", label="Average rating")
+plt.xlabel("Year", fontsize="small", color="midnightblue")
+plt.ylabel("Rating", fontsize="small", color="midnightblue")
+plt.legend()
+plt.grid()
+plt.show()
+plt.close("all")
+
+# Chart 2
+df = pd.read_csv(bestsellers_csv)
+df.columns = ["name", "author", "user_rating", "reviews", "price", "year", "genre"]
+prices = df.groupby(["year"])["price"].agg("mean")
+x = prices.index
+
+plt.plot(prices, "b--o", label="Average price")
+plt.fill_between(x, prices)
+plt.xlabel("Year")
+plt.ylabel("Price")
+plt.legend()
+plt.grid()
+plt.show()
+plt.close("all")
+
+# Chart 3
+df = pd.read_csv(bestsellers_csv)
+df.columns = ["name", "author", "user_rating", "reviews", "price", "year", "genre"]
+genres = df.groupby(["genre"])["genre"].count()
+data = genres.values
+labels = genres.index
+
+plt.pie(
+    data,
+    labels=labels,
+    shadow=False,
+    explode=[0.10, 0.0],
+    autopct="%.2f%%",
+    pctdistance=1.15,
+    labeldistance=1.35,
+)
+
+plt.show()
