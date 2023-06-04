@@ -1,6 +1,8 @@
+import time
 import pandas as pd
 import numpy as np
 from pandas import DataFrame
+import matplotlib.pyplot as plt
 
 
 csv_file = "2017_jun_final.csv"
@@ -79,3 +81,58 @@ df1["avg"].describe()
 
 # Task 2.16 Збережіть отриману таблицю в CSV файл
 df1.to_csv("py_sal.csv", index=False)
+
+# Chart 1
+plt.close("all")
+# df = pd.read_csv(csv_file, header=0)
+# comp_type = df.groupby(["Тип.компании", "Город"])["Город"].count()
+# kyiv = comp_type[:, "Киев"]
+# kharkiv = comp_type[:, "Харьков"]
+
+# plt.plot(kyiv, "bo", label="Kyiv")
+# plt.plot(kharkiv, "ro", label="Kharkiv")
+# plt.xlabel("Type", fontsize="small", color="midnightblue")
+# plt.ylabel("Quantity", fontsize="small", color="midnightblue")
+# plt.legend()
+# plt.grid()
+# plt.show()
+# plt.close("all")
+
+# Chart 2
+# df = pd.read_csv(csv_file, header=0)
+# sal_sex = df.groupby(["Пол", "Город"])["Зарплата.в.месяц"].agg("mean")
+# f_sal = sal_sex["женский"]
+# m_sal = sal_sex["мужской"]
+
+# plt.plot(f_sal, "b-o", label="Women's average salary")
+# plt.plot(m_sal, "r-o", label="Men's average salary")
+# plt.xticks(rotation=90)
+# plt.xlabel("City", fontsize="small", color="midnightblue")
+# plt.ylabel("Salary", fontsize="small", color="midnightblue")
+# plt.title("Women's average salary vs Men's in Ukraine")
+# plt.legend()
+# plt.grid()
+# plt.show()
+# plt.close("all")
+
+# Chart 3
+df = pd.read_csv(csv_file, header=0)
+eng_sal = df.groupby(["Уровень.английского"])["Зарплата.в.месяц"].agg(
+    ["min", "max", "mean"]
+)
+
+data = eng_sal["mean"]
+labels = eng_sal.index
+
+plt.bar(
+    labels,
+    data,
+    color=["b", "r", "y", "g", "c"],
+)
+
+plt.xlabel("Рівень англійської", fontsize="small", color="midnightblue")
+plt.ylabel("Зарплата", fontsize="small", color="midnightblue")
+plt.xticks(rotation=90)
+plt.title("Вплив знанная англійської мови на зарплату", fontsize=15)
+plt.show()
+plt.close("all")

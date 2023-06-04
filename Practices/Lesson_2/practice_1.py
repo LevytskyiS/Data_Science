@@ -88,15 +88,18 @@ def rgb_colors(arg: int):
 
 colors = rgb_colors(len(regions))
 
-plt.figure(figsize=(10, 6))
-plt.bar(regions, year_14, color=colors)
-plt.xticks(rotation=90)
-plt.tick_params(axis="both", labelsize=5)
-plt.title("Birth Rate in Ukraine in 2014", fontsize=10)
-plt.xlabel("Regions", fontsize="small", color="midnightblue")
-plt.ylabel("Birth Rate", fontsize="small", color="midnightblue")
-plt.show()
+# plt.figure(figsize=(10, 6))
+# plt.bar(regions, year_14, color=colors)
+# plt.xticks(rotation=90)
+# plt.tick_params(axis="both", labelsize=5)
+# plt.title("Birth Rate in Ukraine in 2014", fontsize=10)
+# plt.xlabel("Regions", fontsize="small", color="midnightblue")
+# plt.ylabel("Birth Rate", fontsize="small", color="midnightblue")
+# plt.show()
+# plt.close("all")
 
+
+# Chart 1
 # plt.pie(
 #     year_14,
 #     labels=regions,
@@ -107,3 +110,13 @@ plt.show()
 # )
 
 # plt.show()
+# plt.close("all")
+
+# Chart 2
+df = tabs[-12].drop([27])
+# zak = df.loc[(df["регіон"] == "Закарпатська область")]
+# lviv = df.loc[(df["регіон"] == "Львівська область")]
+
+a = df.groupby("регіон")[df.columns[1:]].agg("max")
+print(a.index)
+print(a.loc["Закарпатська область"])
