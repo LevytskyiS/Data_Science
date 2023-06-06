@@ -32,8 +32,8 @@ def loss_function(w_0, w_1, df):
     return cost / (2 * n)
 
 
-w_0 = 0
-w_1 = np.linspace(-6000, 8000, 500)
+# w_0 = 0
+# w_1 = np.linspace(-6000, 8000, 500)
 
 # plt.plot(w_1, [loss_function(w_0, w, df) for w in w_1])
 # plt.show()
@@ -45,7 +45,7 @@ w_0, w_1 = np.meshgrid(grid_w_0, grid_w_1)
 
 z = loss_function(w_0, w_1, df)
 
-# fig = plt.figure(figsize=(14, 8))
-# ax = fig.add_subplot(projection="3d")
-# ax.plot_surface(w_0, w_1, z)
-# plt.show()
+fig = plt.figure(figsize=(14, 8))
+ax = fig.add_subplot(projection="3d")
+ax.plot_surface(w_0, w_1, z)
+plt.show()
