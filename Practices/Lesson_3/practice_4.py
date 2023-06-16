@@ -68,7 +68,21 @@ linear_regression = LinearRegressionM(lr=0.05, thr=0.0001, n_epochs=10000)
 linear_regression.fit(X, y)
 
 
-reg = LinearRegression().fit(X, y)
+# Part 2
+def h(X, W):
+    return np.dot(X, W)
 
-print(reg.intercept_, reg.coef_)
-print(cost(y, reg.predict(X)))
+
+def loss_function(X, Y, W):
+    m = X.shape[0]
+    return np.square(h(X, W) - Y).sum() / (2 * m)
+
+
+theta = np.dot(np.linalg.inv(np.dot(X.T, X)), np.dot(X.T, y))
+analytical = loss_function(X, y, theta)
+print(analytical)
+
+# reg = LinearRegression().fit(X, y)
+
+# print(reg.intercept_, reg.coef_)
+# print(cost(y, reg.predict(X)))
