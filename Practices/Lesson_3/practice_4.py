@@ -2,8 +2,6 @@ import random
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
 
 df = pd.read_csv("Housing.csv")
 
@@ -37,9 +35,10 @@ class LinearRegressionM:
         for i in range(self.n_epochs):
             self.update_w(X, y)
             new_cost = cost(y, self.predict(X))
-            # print(f"{i}, {self.w}, {new_cost}")
             if last_cost - new_cost < self.thr:
-                print(f"{i}, {self.w}, {new_cost}")
+                print(
+                    f"Ітерація # {i}, ваги: {self.w}, мінімальне значення cost функції: {new_cost}"
+                )
                 break
             last_cost = new_cost
 
@@ -68,7 +67,7 @@ linear_regression = LinearRegressionM(lr=0.05, thr=0.0001, n_epochs=10000)
 linear_regression.fit(X, y)
 
 
-# Part 2
+# Аналітичне рішення
 def h(X, W):
     return np.dot(X, W)
 
@@ -78,11 +77,6 @@ def loss_function(X, Y, W):
     return np.square(h(X, W) - Y).sum() / (2 * m)
 
 
-theta = np.dot(np.linalg.inv(np.dot(X.T, X)), np.dot(X.T, y))
-analytical = loss_function(X, y, theta)
-print(analytical)
-
-# reg = LinearRegression().fit(X, y)
-
-# print(reg.intercept_, reg.coef_)
-# print(cost(y, reg.predict(X)))
+weights = linear_regression.w
+analytical = loss_function(X, y, weights)
+print(f"Значення cost/loss функції при аналітичному рішенні: {analytical}")
