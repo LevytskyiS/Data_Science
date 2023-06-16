@@ -1,8 +1,74 @@
+import random
+
+import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
 
-a = np.array([[1], [2], [3]])
-b = np.array([[3], [4], [3]]).T
-print(a.shape, b.shape)
-c = np.dot(a, b)
+df = pd.read_csv("Housing.csv")
 
-print(c)
+
+def cost(y: np.array, h: np.array) -> float:
+    return np.mean((h - y) ** 2) / 2
+
+
+class LinearRegressionM:
+    def __init__(
+        self, lr: float = 0.001, thr: float = 0.00001, n_epochs: int = 1000
+    ) -> None:
+        self.lr = lr
+        self.thr = thr
+        self.n_epochs = n_epochs
+        self.w = np.array(
+            [random.uniform(-5, 5), random.uniform(-5, 5), random.uniform(-5, 5)]
+        )
+        print(f"Init w: {self.w}")
+
+    def predict(self, X: list) -> list:
+        return self.w @ X.T
+
+    def update_w(self, X: np.array, y: np.array):
+        m = len(y)
+        h = self.predict(X)
+        self.w -= self.lr / m * X.T @ (h - y)
+
+    def fit(self, X: np.array, y: np.array):
+        last_cost = 1000000
+        for i in range(self.n_epochs):
+            self.update_w(X, y)
+            new_cost = cost(y, self.predict(X))
+            # print(f"{i}, {self.w}, {new_cost}")
+            if last_cost - new_cost < self.thr:
+                print(f"{i}, {self.w}, {new_cost}")
+                break
+            last_cost = new_cost
+
+
+def normalization(data):
+    mean = np.mean(data)
+    value_range = np.max(data) - np.min(data)
+    result = []
+    for x in data:
+        norm_x = (x - mean) / value_range
+        result.append(norm_x)
+    return result
+
+
+norm_df = pd.DataFrame()
+norm_df["price"] = normalization(df.price)
+norm_df["area"] = normalization(df.area)
+norm_df["bedrooms"] = normalization(df.bedrooms)
+norm_df["bathrooms"] = normalization(df.bathrooms)
+
+
+X = np.array([norm_df.area, norm_df.bedrooms, norm_df.bathrooms]).T
+y = np.array(norm_df.price)
+
+linear_regression = LinearRegressionM(lr=0.05, thr=0.0001, n_epochs=10000)
+linear_regression.fit(X, y)
+
+
+reg = LinearRegression().fit(X, y)
+
+print(reg.intercept_, reg.coef_)
+print(cost(y, reg.predict(X)))
