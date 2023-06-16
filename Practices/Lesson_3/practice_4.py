@@ -12,14 +12,19 @@ def cost(y: np.array, h: np.array) -> float:
 
 class LinearRegressionM:
     def __init__(
-        self, lr: float = 0.001, thr: float = 0.00001, n_epochs: int = 1000
+        self,
+        w,
+        lr: float = 0.001,
+        thr: float = 0.00001,
+        n_epochs: int = 1000,
     ) -> None:
         self.lr = lr
         self.thr = thr
         self.n_epochs = n_epochs
-        self.w = np.array(
-            [random.uniform(-5, 5), random.uniform(-5, 5), random.uniform(-5, 5)]
-        )
+        self.w = w
+        # self.w = np.array(
+        #     [0, np.linspace(-6000, 8000, 500), np.linspace(-6000, 8000, 500)]
+        # )
         print(f"Init w: {self.w}")
 
     def predict(self, X: list) -> list:
@@ -59,11 +64,16 @@ norm_df["area"] = normalization(df.area)
 norm_df["bedrooms"] = normalization(df.bedrooms)
 norm_df["bathrooms"] = normalization(df.bathrooms)
 
-
 X = np.array([norm_df.area, norm_df.bedrooms, norm_df.bathrooms]).T
 y = np.array(norm_df.price)
 
-linear_regression = LinearRegressionM(lr=0.05, thr=0.0001, n_epochs=10000)
+n = X.shape[1]
+w = np.linspace(0, 0, n)
+
+linear_regression = LinearRegressionM(
+    w=w, lr=2, thr=0.0000000000000000000000001, n_epochs=10000000
+)
+# linear_regression = LinearRegressionM(lr=0.001, thr=0.0000001, n_epochs=1000)
 linear_regression.fit(X, y)
 
 

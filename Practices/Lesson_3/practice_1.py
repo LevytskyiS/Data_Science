@@ -40,12 +40,17 @@ def loss_function(w_0, w_1, df):
 
 grid_w_0 = np.arange(-2000, 2000, 10)
 grid_w_1 = np.arange(-10000, 10000, 10)
+# grid_w_2 = np.arange(-10000, 10000, 10)
 
 w_0, w_1 = np.meshgrid(grid_w_0, grid_w_1)
 
-z = loss_function(w_0, w_1, df)
+print(w_0)
+print(w_1)
 
-fig = plt.figure(figsize=(14, 8))
-ax = fig.add_subplot(projection="3d")
-ax.plot_surface(w_0, w_1, z)
-plt.show()
+
+# z = loss_function(w_0, w_1, df)
+
+# fig = plt.figure(figsize=(14, 8))
+# ax = fig.add_subplot(projection="3d")
+# ax.plot_surface(w_0, w_1, z)
+# plt.show()
