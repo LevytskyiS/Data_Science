@@ -77,6 +77,6 @@ def loss_function(X, Y, W):
     return np.square(h(X, W) - Y).sum() / (2 * m)
 
 
-weights = linear_regression.w
+weights = np.linalg.inv(X.T.dot(X)).dot(X.T).dot(y)
 analytical = loss_function(X, y, weights)
-print(f"Значення cost/loss функції при аналітичному рішенні: {analytical}")
+print(f"Ваги: {weights}, cost/loss функції при аналітичному рішенні: {analytical}")
