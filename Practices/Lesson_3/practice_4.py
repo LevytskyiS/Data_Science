@@ -2,6 +2,9 @@ import random
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.linear_model import LinearRegression
 
 df = pd.read_csv("Housing.csv")
 
@@ -68,11 +71,10 @@ X = np.array([norm_df.area, norm_df.bedrooms, norm_df.bathrooms]).T
 y = np.array(norm_df.price)
 
 n = X.shape[1]
-w = np.linspace(0, 0, n)
+# w = np.linspace(0, 0, n)
+w = np.array([0.47714269, 0.17611257, 0.36001286])
 
-linear_regression = LinearRegressionM(
-    w=w, lr=2, thr=0.0000000000000000000000001, n_epochs=10000000
-)
+linear_regression = LinearRegressionM(w=w, lr=0.001, thr=0.0000001, n_epochs=100000)
 # linear_regression = LinearRegressionM(lr=0.001, thr=0.0000001, n_epochs=1000)
 linear_regression.fit(X, y)
 
@@ -90,3 +92,11 @@ def loss_function(X, Y, W):
 weights = np.linalg.inv(X.T.dot(X)).dot(X.T).dot(y)
 analytical = loss_function(X, y, weights)
 print(f"Ваги: {weights}, cost/loss функції при аналітичному рішенні: {analytical}")
+
+# sklearn
+lin_reg = LinearRegression()
+lin_reg.fit(X, y)
+
+print("--- SK ---")
+print(lin_reg.coef_)  # Weights SK
+print(cost(y, lin_reg.predict(X)))  # Cost SK
